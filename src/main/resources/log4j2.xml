@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="log_path">D:/Printer/monitor_log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="SYS_OUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n"/>
+        </Console>
+        <RollingFile name="INFO_FILE" fileName="${log_path}/info.log"
+                     filePattern="${log_path}/info-%d{yyyyMMdd}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="50MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="60"/>
+        </RollingFile>
+        <RollingFile name="ERROR_FILE" fileName="${log_path}/error.log"
+                     filePattern="${log_path}/error-%d{yyyyMMdd}-%i.log.gz">
+            <ThresholdFilter level="ERROR"/>
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="50MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="60"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- Root  -->
+        <Root level="INFO">
+            <AppenderRef ref="SYS_OUT"/>
+            <AppenderRef ref="INFO_FILE"/>
+            <AppenderRef ref="ERROR_FILE"/>
+        </Root>
+        <!-- http -->
+        <Logger name="org.apache.http" level="ERROR"/>
+        <!-- Spring -->
+        <Logger name="org.springframework" level="ERROR"/>
+        <!-- mybatis loggers -->
+        <Logger name="com.ibatis" level="DEBUG"/>
+        <!-- sql loggers additivity是否追加到root -->
+        <Logger name="java.sql" level="DEBUG"/>
+        <Logger name="com.coctrl" level="TRACE"/>
+    </Loggers>
+</Configuration>
